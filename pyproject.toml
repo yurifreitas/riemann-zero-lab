@@ -1,0 +1,19 @@
+[project]
+name = "zeta-advanced"
+version = "0.1.0"
+description = "Adaptive computation of Hardy Z-function using Riemann–Siegel, Gram blocks, wavelets and Turing verification"
+requires-python = ">=3.10"
+
+dependencies = [
+    "mpmath>=1.3.0",
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "pywavelets>=1.5",
+    "scikit-learn>=1.4"
+]
+
+[tool.uv]
+dev-dependencies = [
+    "matplotlib>=3.8",
+    "jupyterlab>=4.1"
+]

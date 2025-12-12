@@ -1,14 +1,17 @@
-from z_fast import Z_fast
-
-def gram_failures(gram_points):
-    """
-    Detecta falhas da Lei de Gram:
-    Z(g_n) e Z(g_{n+1}) não alternam sinal
-    """
+def gram_failures(grams, zeros):
     failures = []
-    for i in range(len(gram_points) - 1):
-        g0, g1 = gram_points[i], gram_points[i+1]
-        z0, z1 = Z_fast(float(g0)), Z_fast(float(g1))
-        if z0 * z1 > 0:
-            failures.append((g0, g1))
+    zi = 0
+
+    for g0, g1 in zip(grams, grams[1:]):
+        count = 0
+        start_zi = zi
+
+        while zi < len(zeros) and zeros[zi] < g1:
+            if zeros[zi] >= g0:
+                count += 1
+            zi += 1
+
+        if count != 1:
+            failures.append((g0, g1, count))
+
     return failures

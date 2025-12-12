@@ -5,8 +5,8 @@ from turing_check import expected_zero_count
 from multiprocessing import Pool, cpu_count
 import numpy as np
 import mpmath as mp
+
 from plot_advanced import advanced_gap_plot
-# análises
 from gaps import normalized_gaps
 from gram import gram_sequence
 from gram_check import gram_failures
@@ -44,7 +44,7 @@ if __name__ == "__main__":
         print(z)
 
     # =========================
-    # 2. TURING CHECK CORRETO
+    # 2. TURING CHECK
     # =========================
 
     count_blocks = [
@@ -70,11 +70,12 @@ if __name__ == "__main__":
     print("\nTuring check:", turing_ok)
 
     # =========================
-    # 3. GAP STATISTICS (GUE)
+    # 3. GAP STATISTICS
     # =========================
 
     gaps = normalized_gaps(all_zeros)
     advanced_gap_plot(gaps)
+
     print("\n=== GAP STATISTICS ===")
     print(f"Total gaps: {len(gaps)}")
     print(f"Mean gap: {gaps.mean():.6f}")
@@ -83,11 +84,11 @@ if __name__ == "__main__":
     print(f"Max  gap: {gaps.max():.6f}")
 
     # =========================
-    # 4. LEI DE GRAM
+    # 4. LEI DE GRAM (CORRETA)
     # =========================
 
     grams = gram_sequence(T_START, T_END)
-    failures = gram_failures(grams)
+    failures = gram_failures(grams, all_zeros)
 
     print("\n=== GRAM LAW CHECK ===")
     print(f"Gram points: {len(grams)}")
@@ -95,5 +96,5 @@ if __name__ == "__main__":
 
     if failures:
         print("First Gram failures:")
-        for g0, g1 in failures[:5]:
-            print(f"  Failure between {g0} and {g1}")
+        for g0, g1, count in failures[:5]:
+            print(f"  [{count} zeros] between {g0} and {g1}")

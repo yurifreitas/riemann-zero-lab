@@ -1,56 +1,91 @@
-# zero_do_rian
+# Riemann-zero-lab
 
-Implementação experimental e paralela para detecção numérica de zeros não triviais
-da função zeta de Riemann na linha crítica, com validação via método de Turing
-(aplicado corretamente por blocos disjuntos).
+Implementação experimental e paralela para **detecção numérica, validação e análise estatística**
+dos zeros não triviais da função zeta de Riemann na **linha crítica**.
 
-Este projeto tem foco em **matemática computacional séria**, separando:
-- detecção numérica (rápida e robusta),
+O projeto adota uma abordagem de **matemática experimental rigorosa**, separando de forma clara:
+
+- detecção numérica rápida e robusta,
 - refinamento de precisão,
-- e validação teórica local.
+- validação teórica local.
 
-Não é uma prova da Hipótese de Riemann.
-É um framework experimental para explorar zeros em alturas moderadas (T ≳ 10⁴).
+> **Este projeto não é uma prova da Hipótese de Riemann.**  
+> Seu objetivo é fornecer um framework reproduzível para exploração computacional
+> dos zeros da zeta em alturas moderadas (*T* ≳ 10⁴).
 
 ---
 
 ## ✨ Características principais
 
-- Scan adaptativo usando aproximação de Hardy Z (float64)
-- Refinamento de raízes com `mpmath`
-- Paralelismo via `multiprocessing`
-- Uso de overlap **apenas para busca**, nunca para contagem
-- Validação por **Turing check em blocos disjuntos**
-- Deduplicação numérica robusta
-- Estrutura clara, modular e extensível
+- Scan adaptativo usando a função de Hardy \( Z(t) \) em `float64`
+- Refinamento de raízes com alta precisão via `mpmath`
+- Execução paralela com `multiprocessing`
+- Uso de *overlap* **exclusivamente para busca**, nunca para contagem
+- Validação rigorosa por **método de Turing aplicado em blocos disjuntos**
+- Deduplicação numérica robusta de raízes
+- Estrutura clara, modular e facilmente extensível
 
 ---
 
-## 📂 Estrutura do projeto
+## 🔬 Metodologia
 
-adaptive_scan.py # Detecção rápida de mudanças de sinal
-├── config.py # Parâmetros globais (T, precisão, blocos)
-├── hardy_z.py # Hardy Z de alta precisão (mpmath)
-├── z_fast.py # Hardy Z aproximado (float64)
-├── zero_finder.py # Refinamento de zeros (mp.findroot)
-├── parallel_scan.py # Processamento paralelo de blocos
-├── turing_check.py # Validação teórica por blocos
-├── theta.py # Função theta de Riemann
-├── main.py # Pipeline principal
-├── pyproject.toml
-└── README.md/
-
+1. O intervalo \([T_{\text{start}}, T_{\text{end}}]\) é dividido em blocos com sobreposição
+   apenas para **detecção inicial** de mudanças de sinal.
+2. Cada bloco é processado de forma independente e paralela.
+3. As raízes detectadas são refinadas com alta precisão.
+4. Os resultados são deduplicados globalmente.
+5. A contagem de zeros é validada por um **Turing check correto**, aplicado
+   em blocos **sem sobreposição**.
+6. Estatísticas espectrais e análises adicionais são computadas a partir do
+   conjunto validado de zeros.
 
 ---
+
+## 📊 Análises incluídas
+
+- Estatísticas de espaçamento normalizado entre zeros
+- Comparação empírica com predições da **Random Matrix Theory (GUE)**
+- Detecção explícita de falhas da Lei de Gram
+- Análise de compensação local de zeros entre intervalos de Gram
+- Visualizações avançadas:
+  - histogramas
+  - funções de distribuição acumulada (CDF)
+  - mapas de correlação
+  - *heatmaps* espectrais
+
 ---
 
-## ⚙️ Requisitos
+## 🧠 Insight experimental
 
-- Python ≥ 3.11
-- numpy
+Os experimentos indicam que as aparentes falhas da Lei de Gram **não decorrem de
+irregularidade no espaçamento dos zeros**, mas da **acumulação quantizada da fase
+(\(\arg \zeta\)) entre pontos consecutivos de Gram**.
+
+Os zeros emergem como eventos discretos associados à dinâmica de fase, e não
+como uma simples progressão espacial regular.
+
+---
+
+## 🛠️ Stack tecnológica
+
+- Python
+- NumPy
 - mpmath
+- multiprocessing
+- matplotlib
 
 ---
+
+## 🎯 Objetivo
+
+Fornecer um ambiente experimental confiável para:
+
+- matemática computacional
+- teoria analítica dos números
+- estudos espectrais
+- investigações na interface entre matemática e física
+
+
 
 
 ---
@@ -63,6 +98,9 @@ python main.py
 ```
 
 ---
+
+
+## 🎯 Resultados
 Zeros encontrados: 230
 Primeiros zeros:
 10000.0907527738456702649384698701380796170367373777738190614
@@ -96,33 +134,6 @@ First Gram failures:
   [2 zeros] between 10023.8888156250894780843539682403503109772662186779554188005 and 10024.7407903596185281878918306103988593565034505009345405643
   [0 zeros] between 10024.7407903596185281878918306103988593565034505009345405643 and 10025.5927552757508203846238191118440996665508003136007723935
 (zero_do_rian) yuri@yuri-pc zero_do_rian % 
-
----
-
-
-## 🧠 Metodologia (resumo)
-
-- O intervalo `[T_START, T_END]` é dividido em **blocos de busca com overlap**.
-- Cada bloco é escaneado rapidamente usando `Z_fast`.
-- Intervalos candidatos são refinados com `mpmath`.
-- Todos os zeros encontrados são **deduplicados globalmente**.
-- Para validação, o intervalo é repartido em **blocos disjuntos reais**.
-- O número de zeros em cada bloco é comparado com a fórmula de
-  **Riemann–von Mangoldt**, usando **tolerância assintótica adequada**.
-
-Esse procedimento evita falsos negativos comuns ao aplicar o método de Turing
-de forma global em janelas curtas e em valores elevados de `T`.
-
----
-
-## ⚠️ Limitações conhecidas
-
-- A aproximação de Hardy Z utilizada não é otimizada para valores muito grandes
-  de `T` (≳ 10⁶).
-- O método de Turing empregado é **numérico e local**, não constituindo
-  uma prova formal da Hipótese de Riemann.
-- Possíveis falhas da lei de Gram ou zeros rasos não são tratados
-  simbolicamente.
 
 ---
 

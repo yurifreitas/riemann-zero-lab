@@ -133,3 +133,6 @@ de forma global em janelas curtas e em valores elevados de `T`.
 - Odlyzko, *The Riemann zeta function: zeros and random matrix theory*
 - Edwards, *Riemann's Zeta Function*
 - Conway (inspiração estrutural: partições, domínios exclusivos, contagem sem ambiguidade)
+
+
+### Embora a Lei de Gram falhe localmente, os desvios obedecem a uma lei de conservação: excessos e déficits de zeros se compensam em escalas curtas.
